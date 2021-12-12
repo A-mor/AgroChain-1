@@ -3,6 +3,7 @@ pragma solidity ^0.5.0;
 contract StructStorage {
 
     uint256 public s = 1; 
+    uint256 public supCounter =1;
     uint256 public c;
     uint256 public t=1;
     mapping (address => uint) balances;
@@ -12,7 +13,6 @@ contract StructStorage {
     }
 
         function sendCoin(address receiver, uint amount, address sender) public returns(bool sufficient){
-        
         
         if (balances[sender] < amount) 
         return false;
@@ -28,6 +28,9 @@ contract StructStorage {
     function getBalance(address addr) view public returns(uint){
         return balances[addr];
     }
+
+
+
 struct farmer {
    
     bytes fid;
@@ -48,7 +51,11 @@ struct lot {
     bytes32 expdate;
 }
 
+
+
 address public tester;
+address public farmerad; 
+
 address owner;
 
 mapping (bytes => farmer) f1;

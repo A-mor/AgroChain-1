@@ -1,4 +1,12 @@
-
+<!--
+    *Forms appears according to the role/address of the user
+    *Addresses and roles are defined in the app.js 
+    *Btn-group-undef added : if no static user address detected
+    *Must configure calling supplier methods error : not a function
+    *Must implement in contract an array of addresses & mapping (address => role)
+     so that an address if ever connected to the app through metamask it will always have the same role 
+    *New contract created for the supplier I wad Trying to fix issues I faced, but it did not solve them 
+-->
 
 <!DOCTYPE html>
 <html>
@@ -8,18 +16,34 @@
   <script src="./app.js"></script>
 </head>
 <body>
-  <h1>Agricultural Supply Chain Dapp</h1>
-  <h4>Public Id : <span class="white"><span id="SenderBalance"></span> </h4>
   
-    <div class="btn-group" id="form-selector" align="center">
+  <h1>Agricultural Supply Chain Dapp</h1>
+  <h4>Identified as : <span class="white"><span id="SenderBalance"></span> </h4>
+  <hide>
+    <div hidden class="btn-group" id="form-selector" align="center">
 		
 		<button type="button" class="btn1 btn-selector active" id="sign-up-btn">Farmer</button>
 		<button type="button" class="btn1 btn-selector" id="log-in-btn">Quality Testing</button>
 		<button type="button" class="btn1 btn-selector" id="payments-btn">Customer</button>
+    <button type="button" class="btn1 btn-selector" id="supplier-btn">Supplier</button>
 		<button type="button" class="btn1 btn-selector" id="finance-btn">Micro-Finance</button>
+    
 		
 	</div>
-	<div class="form" id="sign-up-form">
+
+  <div hidden class="btn-group" id="form-selector-undef" align="center">
+		
+		<button type="button" class="btn1 btn-selector active" id="sign-up-btn-undef">Farmer</button>
+		<button type="button" class="btn1 btn-selector" id="log-in-btn-undef">Quality Testing</button>
+		<button type="button" class="btn1 btn-selector" id="payments-btn-undef">Customer</button>
+    <button type="button" class="btn1 btn-selector" id="supplier-btn-undef">Supplier</button>
+		<button type="button" class="btn1 btn-selector" id="finance-btn-undef">Micro-Finance</button>
+    
+		
+	</div>
+
+
+	<div hidden class="form" name="customer" id="sign-up-form">
 		<h2 class="form-title">Enter Details</h2>
 		<input type="text" class="input-std" id="fid" placeholder="Farmer Id">
 		<input type="text" class="input-std" id="fname" placeholder="Farmers Name">
@@ -33,7 +57,7 @@
 	</div>
 	
 	 	
-  <div class="form" id="log-in-form">
+  <div hidden class="form" id="log-in-form">
   <h2 class="form-title">Quality Testing</h2>
 		
 		
@@ -53,15 +77,8 @@
      
   <br><br>
   
-  <table align="center"> 
-  <tr>
-  <td><button type="button" id="printBlock" class="btn btn-selector" onclick="printBlock()">Print Block</button></td>
-  <td><button type="button" id="printTransaction" class="btn btn-selector" onclick="printTransaction()">Print Transaction</button></td></tr>
-  </table> 
+  
  
-  <br>
-  <h4> Block Number : <span class="blockclass" span id="blocknum"> </span></h4>
-  <br>
 <button type="button" class="btn-submit1" id="Approve-btn" align ="center" font="20px">Approve Details</button>
   
 
@@ -71,7 +88,7 @@
  </div>
 	
 
-<div class="form" id="approve-form">
+<div hidden class="form" id="approve-form">
      <h2 class="form-title">Product Details</h2>
 		<input type="text" class="input-std" id="lotno" placeholder="Lot Number">
 		<input type="text" class="input-std" id="grade" placeholder="Grade">
@@ -86,7 +103,7 @@
   </div>
   
   
-  <div class="form" id="payments-form">
+  <div hidden class="form" id="payments-form">
    <h2 class="form-title">Customer</h2>
   <table>  
   <input type="text" class="input-std" id="getfid" placeholder="Farmer Id">
@@ -107,15 +124,13 @@
   <button type="button" class="btn-submit" id="getcustval" onclick="getQ();cgetQ();">Get Value</button>
   </div>
 
-  <div class="form" id="finance-form">
+  <div hidden class="form" id="finance-form">
 		<h2 class="form-title">Micro-Finance</h2>
 		
 
-		<input type="text" class="input-std" id="pfid" placeholder="Farmer Id">
-		<input type="text" class="input-std" id="lotnum" placeholder="Lot Number">
-		<input type="text" class="input-std" id="amount" placeholder="Fund Amount">
+		<input type="text" class="input-std" id="pfid" placeholder="Farmer Adress exp : 0xAD221d151zd2d3658c">
+		<input type="text" class="input-std" id="amount" placeholder="Fund Amount in ETHER">
 		<table>
-		<tr><td><b><label class = "black">Balance</label></td><td>:</td></b><td><span class="black"><span class="black" span id="balance"></span>$</span></td></tr>
 		
 		</table>
 		<button type="button" class="btn-submit" id="getfund" onclick="fund()">Fund Farmer</button>
@@ -124,6 +139,15 @@
 	</div>
 
 
+  <div hidden class="form" id="supplier-form">
+		<h2 class="form-title">Check in form</h2>
+		<input type="text" class="input-std" id="lotnSupplier" placeholder="numero de lot">
+		<input type="text" class="input-std" id="check-in-date" placeholder="Check in date">
+		<button type="button" class="btn-submit" id="setvalue-supplier" onclick="setSupplier()">Submit Details!</button>
+	<span id="status"></span>
+	</div>
+
+</hide>
   
    <link href="./app.css" rel='stylesheet' type='text/css'>
   <script src="./app.js"></script>
