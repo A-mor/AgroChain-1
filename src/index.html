@@ -1,156 +1,327 @@
-<!--
-    *Forms appears according to the role/address of the user
-    *Addresses and roles are defined in the app.js 
-    *Btn-group-undef added : if no static user address detected
-    *Must configure calling supplier methods error : not a function
-    *Must implement in contract an array of addresses & mapping (address => role)
-     so that an address if ever connected to the app through metamask it will always have the same role 
-    *New contract created for the supplier I wad Trying to fix issues I faced, but it did not solve them 
--->
-
 <!DOCTYPE html>
 <html>
 <head>
   <title>Agricultural Blockchain App</title>
    <link href="./app.css" rel='stylesheet' type='text/css'>
   <script src="./app.js"></script>
+
+  <script type="text/javascript" src="https://unpkg.com/qr-code-styling/lib/qr-code-styling.js"></script>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  
   <h1>Agricultural Supply Chain Dapp</h1>
   <h4>Identified as : <span class="white"><span id="SenderBalance"></span> </h4>
-  <hide>
-    <div hidden class="btn-group" id="form-selector" align="center">
-		
+  
+    <div class="btn-group" id="form-selector" align="center">
 		<button type="button" class="btn1 btn-selector active" id="sign-up-btn">Farmer</button>
 		<button type="button" class="btn1 btn-selector" id="log-in-btn">Quality Testing</button>
 		<button type="button" class="btn1 btn-selector" id="payments-btn">Customer</button>
-    <button type="button" class="btn1 btn-selector" id="supplier-btn">Supplier</button>
+        <button type="button" class="btn1 btn-selector" id="supplier-btn">Supplier</button> 
 		<button type="button" class="btn1 btn-selector" id="finance-btn">Micro-Finance</button>
-    
-		
-	</div>
-
-  <div hidden class="btn-group" id="form-selector-undef" align="center">
-		
-		<button type="button" class="btn1 btn-selector active" id="sign-up-btn-undef">Farmer</button>
+    </div>
+    <div hidden class="btn-group" id="form-selector-undef" align="center">
+		<button type="button" class="btn1 btn-selector" id="sign-up-btn-undef">Farmer</button>
 		<button type="button" class="btn1 btn-selector" id="log-in-btn-undef">Quality Testing</button>
 		<button type="button" class="btn1 btn-selector" id="payments-btn-undef">Customer</button>
-    <button type="button" class="btn1 btn-selector" id="supplier-btn-undef">Supplier</button>
+        <button type="button" class="btn1 btn-selector" id="supplier-btn-undef">Supplier</button>
 		<button type="button" class="btn1 btn-selector" id="finance-btn-undef">Micro-Finance</button>
+	</div>
+
+    <section id="content" align="center" >
+
+    <div>
+        <form align ="center" id="qrForm" onsubmit="return false;">
+	        <div align="center" class="form" name="customer" id="sign-up-form">
+                <h2 class="form-title">Enter Details</h2>
+                <input align="center" type="text"  name="dataInput" id="fid" placeholder="Farmer Id" required />
+                <input align="center" type="text"  name="dataInput" id="fname" placeholder="Farmer Name" required />
+                <input align="center" type="text"  name="dataInput" id="loc" placeholder="Location" required />
+                <input align="center" type="text"  name="dataInput" id="crop" placeholder="Crop Name" required />
+                <input align="center" type="text"  name="dataInput" id="contact" placeholder="Phone" required />
+                <input align="center" type="text"  name="dataInput" id="quantity" placeholder="Quantity" required />
+                <input align="center" type="text"  name="dataInput" id="exprice" placeholder="Expected Price" required />
+                <button type="button" class="btn-submit" id="setvalue" onclick="set()">Submit Details!</button>
+                <span id="status"></span>
+	        </div>
+            
+        </form>
+    </div>  
+
     
-		
-	</div>
+
+    </section> 
+<!-- ********************************* Tester Form ********************************* -->
+    	
+<!--    ##### Get Farmer Credentials by ID ##### -->
+    <div class="form" id="log-in-form">
+
+        <h2 class="form-title">Quality Testing</h2>
+        <br>
+        <table >  
+        <input type="text" class="input-std" id="fid1" placeholder="Farmer Id">
+        <tr><td><b><label class = "black">Farmer Name</label></td><td>:</td></b><td><span class="black"  id="getval2"></span></td></tr>
+        <tr><td><b><label class = "black">Location</label></td><td>:</td></b><td><span class="black" span id="getval3"></span></td></tr>
+        <tr><td><b><label class = "black">Crop</label></td><td>:</td></b><td><span class="black" span id="getval4"></span></td></tr>
+        <tr><td><b><label class = "black">Phone</label></td><td>:</td></b><td><span class="black" span id="getval5"></span></td></tr>
+        <tr><td><b><label class = "black">Quantity</label></td><td>:</td></b><td><span class="black" span id="getval6"></span></td></tr>
+        <tr><td><b><label class = "black">Expected price</label><td>:</td></td></b><td><span class="black" span id="getval7"></span></td></tr>
+        </table> 
+
+        <button type="button" class="btn-submit" id="getvalue" onclick="get();">Get Farmer Credentials</button>
+        <br><br>
+        <button type="button" class="btn-submit1" id="Approve-btn" align ="center" font="20px">Approve Lot</button>
+        <span id="status"></span>
+
+    </div>
+
+    <!--    ##### Set Lot Details  ##### -->
+
+    <div align="center" class="form" id="approve-form">
+
+        <h2 class="form-title">Product Details</h2>
+        <input type="text"  name="dataInput" id="lotno" placeholder="Lot number" required />
+        <input type="text"  name="dataInput" id="grade" placeholder="Grade" required />
+        <input type="text"  name="dataInput" id="mrp" placeholder="MRP" required />
+        <input type="text"  name="dataInput" id="testdate" placeholder="Test Date" required />
+        <input type="text"  name="dataInput" id="expdate" placeholder="Expiry Date" required />
+            
+        <button type="button" class="btn-submit" id="setvalue" onclick="setQ()">Submit</button>
+        <span id="status"></span>	
+
+    </div>
+  <!-- ********************************* END Tester Form ********************************* -->
+  
+  <!-- ********************************* Custumer Form ********************************* -->
+    <div class="form" id="payments-form">
+        <h2 class="form-title">Customer</h2>
+
+        <!-- ##### QRcode Reader Stuff ##### -->
+        <head>
+            <meta charset="UTF-8">
+            <title>QR Scanner Demo</title>
+            </head>
+            <body>
+            <style>
+            hr {
+                margin-top: 32px;
+
+            }
+            input[type="file"] {
+                display: block;
+                margin-bottom: 16px;
+            }
+            div {
+                margin-bottom: 16px;
+            }
+            #flash-toggle {
+                display: none;
+            }
+            </style>
+        <div id="forhidd" style="display: none;">
+        <div >
+            <video id="qr-video"></video>
+            <br>
+            <label>
+                <input id="show-scan-region" type="checkbox">
+                Show scan region
+            </label>
+        </div>
+        <div>
+            <select id="inversion-mode-select">
+                <option value="original">Scan original (dark QR code on bright background)</option>
+                <option value="invert">Scan with inverted colors (bright QR code on dark background)</option>
+                <option value="both">Scan both</option>
+            </select>
+            <br>
+        </div>
+        <b>Device has camera: </b>
+        <span id="cam-has-camera"></span>
+        <br>
+        <div>
+            <b>Preferred camera:</b>
+            <select id="cam-list">
+                <option value="environment" selected>Environment Facing (default)</option>
+                <option value="user">User Facing</option>
+            </select>
+        </div>
+        <b>Camera has flash: </b>
+        <span id="cam-has-flash"></span>
+        <div>
+            <button id="flash-toggle">📸 Flash: <span id="flash-state">off</span></button>
+
+        <br>
+        </div>
+        <b>Detected QR code: </b>
+        <span id="cam-qr-result">None</span>
+        <br>
+        <b>Last detected at: </b>
+        <span id="cam-qr-result-timestamp"></span>
+        <br>
+        <button id="start-button">Start</button>
+        <button id="stop-button">Stop</button>
+        <hr>
 
 
-	<div hidden class="form" name="customer" id="sign-up-form">
-		<h2 class="form-title">Enter Details</h2>
-		<input type="text" class="input-std" id="fid" placeholder="Farmer Id">
-		<input type="text" class="input-std" id="fname" placeholder="Farmers Name">
-		<input type="text" class="input-std" id="loc" placeholder="Location">
-		<input type="text" class="input-std" id="crop" placeholder="Crop Name">
-		<input type="text" class="input-std" id="contact" placeholder="Phone">
-		<input type="text" class="input-std" id="quantity" placeholder="Quantity">
-		<input type="text" class="input-std" id="exprice" placeholder="Expected Price">
-		<button type="button" class="btn-submit" id="setvalue" onclick="set()">Submit Details!</button>
-	<span id="status"></span>
-	</div>
+        </div>
+        <h6>Scan from File:</h6>
+        <input type="file" id="file-selector">
+        <b>Detected QR code: </b>
+        <span id="file-qr-result">None</span>
+
+        <script type="module">
+            import QrScanner from "/qr-scanner.min.js";
+            QrScanner.WORKER_PATH = '/qr-scanner-worker.min.js';
+
+            const video = document.getElementById('qr-video');
+            const camHasCamera = document.getElementById('cam-has-camera');
+            const camList = document.getElementById('cam-list');
+            const camHasFlash = document.getElementById('cam-has-flash');
+            const flashToggle = document.getElementById('flash-toggle');
+            const flashState = document.getElementById('flash-state');
+            const camQrResult = document.getElementById('cam-qr-result');
+            const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
+            const fileSelector = document.getElementById('file-selector');
+            const fileQrResult = document.getElementById('file-qr-result');
+        // ####### File Scanning #######
+
+            fileSelector.addEventListener('change', (event) => {
+                const file = fileSelector.files[0];
+                if (!file) {
+                    return ("file error");
+                }
+                QrScanner.scanImage(file)
+                    .then(result => setResult(fileQrResult, result))
+                    .catch(e => setResult(fileQrResult, e || 'No QR code found.'));
+            });
+
+            function setResult(label, result) {
+                label.textContent = result;
+                camQrResultTimestamp.textContent = new Date().toString();
+                label.style.color = 'teal';
+                clearTimeout(label.highlightTimeout);
+                label.highlightTimeout = setTimeout(() => label.style.color = 'inherit', 100);
+            }
+
+            // ####### Web Cam Scanning #######
+
+            const scanner = new QrScanner(video, result => setResult(camQrResult, result), error => {
+                camQrResult.textContent = error;
+                camQrResult.style.color = 'inherit';
+            });
+
+            const updateFlashAvailability = () => {
+                scanner.hasFlash().then(hasFlash => {
+                    camHasFlash.textContent = hasFlash;
+                    flashToggle.style.display = hasFlash ? 'inline-block' : 'none';
+                });
+            };
+
+            scanner.start().then(() => {
+                updateFlashAvailability();
+                // List cameras after the scanner started to avoid listCamera's stream and the scanner's stream being requested
+                // at the same time which can result in listCamera's unconstrained stream also being offered to the scanner.
+                // Note that we can also start the scanner after listCameras, we just have it this way around in the demo to
+                // start the scanner earlier.
+                QrScanner.listCameras(true).then(cameras => cameras.forEach(camera => {
+                    const option = document.createElement('option');
+                    option.value = camera.id;
+                    option.text = camera.label;
+                    camList.add(option);
+                }));
+            });
+
+            QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
+
+            // for debugging
+            window.scanner = scanner;
+
+            document.getElementById('show-scan-region').addEventListener('change', (e) => {
+                const input = e.target;
+                const label = input.parentNode;
+                label.parentNode.insertBefore(scanner.$canvas, label.nextSibling);
+                scanner.$canvas.style.display = input.checked ? 'block' : 'none';
+            });
+
+            document.getElementById('inversion-mode-select').addEventListener('change', event => {
+                scanner.setInversionMode(event.target.value);
+            });
+
+            camList.addEventListener('change', event => {
+                scanner.setCamera(event.target.value).then(updateFlashAvailability);
+            });
+
+            flashToggle.addEventListener('click', () => {
+                scanner.toggleFlash().then(() => flashState.textContent = scanner.isFlashOn() ? 'on' : 'off');
+            });
+
+            document.getElementById('start-button').addEventListener('click', () => {
+                scanner.start();
+            });
+
+            document.getElementById('stop-button').addEventListener('click', () => {
+                scanner.stop();
+            });
+        </script>
+<!-- ##### End QRCode Stuff ##### -->
+
+<!-- ############################ Start Customer Form ############################ -->
+<table>  
+    <input type="text" class="input-std" id="getfid" placeholder="Farmer Id">
+    <tr><td><b><label class = "black">Farmer Id</label></td><td>:</td></b><td><span class="black" span id="cgetval1"></span></td></tr>
+    <tr><td><b><label class = "black">Farmer Name</label></td><td>:</td></b><td><span class="black" span id="cgetval2"></span></td></tr>
+    <tr><td><b><label class = "black">Location</label></td><td>:</td></b><td><span class="black" span id="cgetval3"></span></td></tr>
+    <tr><td><b><label class = "black">Crop</label></td><td>:</td></b><td><span class="black" span id="cgetval4"></span></td></tr>
+    <tr><td><b><label class = "black">Phone</label></td><td>:</td></b><td><span class="black" span id="cgetval5"></span></td></tr>
+    <tr><td><b><label class = "black">Quantity</label></td><td>:</td></b><td><span class="black" span id="cgetval6"></span></td></tr>
+    <tr><td><b><label class = "black">Expected price</label><td>:</td></td></b><td><span class="black" span id="cgetval7"></span></td></tr>
+    <input type="text" class="input-std" id="lotnum" placeholder="Lot number">
+    <tr><td><b><label class = "black">Lot Number</label><td>:</td></td></b><td><span class="black" span id="cgetval8"></span></td></tr>
+    <tr><td><b><label class = "black">Grade</label><td>:</td></td></b><td><span class="black" span id="cgetval9"></span></td></tr>
+    <tr><td><b><label class = "black">MRP</label><td>:</td></td></b><td><span class="black" span id="cgetval10"></span></td></tr>
+    <tr><td><b><label class = "black">Test Date</label><td>:</td></td></b><td><span class="black" span id="cgetval11"></span></td></tr>
+    <tr><td><b><label class = "black">Expiry Date</label><td>:</td></td></b><td><span class="black" span id="cgetval12"></span></td></tr>
+</table>
+<button type="button" class="btn-submit" id="getcustval" onclick="getQ();cgetQ();">Get Value</button>
+</div>
+<!-- ********************************* END Custumer Form ********************************* -->
+
+
+<!-- ********************************* Financing Form ********************************* -->
+<div class="form" id="finance-form">
+	<h2 class="form-title">Micro-Finance</h2>
 	
-	 	
-  <div hidden class="form" id="log-in-form">
-  <h2 class="form-title">Quality Testing</h2>
-		
-		
-  <br>
-  <table>  
-  <!-- <tr><td><b><label class = "black">Farmer Id</label></td><td>:</td></b><td><span class="black" span id="getval1"></span></td></tr> -->
-  <input type="text" class="input-std" id="fid1" placeholder="Farmer Id">
-  <tr><td><b><label class = "black">Farmer Name</label></td><td>:</td></b><td><span class="black" span id="getval2"></span></td></tr>
-  <tr><td><b><label class = "black">Location</label></td><td>:</td></b><td><span class="black" span id="getval3"></span></td></tr>
-  <tr><td><b><label class = "black">Crop</label></td><td>:</td></b><td><span class="black" span id="getval4"></span></td></tr>
-  <tr><td><b><label class = "black">Phone</label></td><td>:</td></b><td><span class="black" span id="getval5"></span></td></tr>
-  <tr><td><b><label class = "black">Quantity</label></td><td>:</td></b><td><span class="black" span id="getval6"></span></td></tr>
-  <tr><td><b><label class = "black">Expected price</label><td>:</td></td></b><td><span class="black" span id="getval7"></span></td></tr>
-  
-  </table>  
-  <button type="button" class="btn-submit" id="getvalue" onclick="get();">Get Value</button>
-     
-  <br><br>
-  
-  
- 
-<button type="button" class="btn-submit1" id="Approve-btn" align ="center" font="20px">Approve Details</button>
-  
-
-
-  <span id="status"></span>
-
- </div>
-	
-
-<div hidden class="form" id="approve-form">
-     <h2 class="form-title">Product Details</h2>
-		<input type="text" class="input-std" id="lotno" placeholder="Lot Number">
-		<input type="text" class="input-std" id="grade" placeholder="Grade">
-		<input type="text" class="input-std" id="mrp" placeholder="MRP">
-		<input type="text" class="input-std" id="testdate" placeholder="Test Date">
-		<input type="text" class="input-std" id="expdate" placeholder="Expiry Date">
-		
-		<button type="button" class="btn-submit" id="setvalue" onclick="setQ()">Submit</button>
-			
-		<span id="status"></span>	
-
-  </div>
-  
-  
-  <div hidden class="form" id="payments-form">
-   <h2 class="form-title">Customer</h2>
-  <table>  
-  <input type="text" class="input-std" id="getfid" placeholder="Farmer Id">
-  <tr><td><b><label class = "black">Farmer Id</label></td><td>:</td></b><td><span class="black" span id="cgetval1"></span></td></tr>
-  <tr><td><b><label class = "black">Farmer Name</label></td><td>:</td></b><td><span class="black" span id="cgetval2"></span></td></tr>
-  <tr><td><b><label class = "black">Location</label></td><td>:</td></b><td><span class="black" span id="cgetval3"></span></td></tr>
-  <tr><td><b><label class = "black">Crop</label></td><td>:</td></b><td><span class="black" span id="cgetval4"></span></td></tr>
-  <tr><td><b><label class = "black">Phone</label></td><td>:</td></b><td><span class="black" span id="cgetval5"></span></td></tr>
-  <tr><td><b><label class = "black">Quantity</label></td><td>:</td></b><td><span class="black" span id="cgetval6"></span></td></tr>
-  <tr><td><b><label class = "black">Expected price</label><td>:</td></td></b><td><span class="black" span id="cgetval7"></span></td></tr>
-  <input type="text" class="input-std" id="lotnum" placeholder="Lot number">
-  <tr><td><b><label class = "black">Lot Number</label><td>:</td></td></b><td><span class="black" span id="cgetval8"></span></td></tr>
-  <tr><td><b><label class = "black">Grade</label><td>:</td></td></b><td><span class="black" span id="cgetval9"></span></td></tr>
-  <tr><td><b><label class = "black">MRP</label><td>:</td></td></b><td><span class="black" span id="cgetval10"></span></td></tr>
-  <tr><td><b><label class = "black">Test Date</label><td>:</td></td></b><td><span class="black" span id="cgetval11"></span></td></tr>
-  <tr><td><b><label class = "black">Expiry Date</label><td>:</td></td></b><td><span class="black" span id="cgetval12"></span></td></tr>
-  </table>
-  <button type="button" class="btn-submit" id="getcustval" onclick="getQ();cgetQ();">Get Value</button>
-  </div>
-
-  <div hidden class="form" id="finance-form">
-		<h2 class="form-title">Micro-Finance</h2>
-		
-
-		<input type="text" class="input-std" id="pfid" placeholder="Farmer Adress exp : 0xAD221d151zd2d3658c">
-		<input type="text" class="input-std" id="amount" placeholder="Fund Amount in ETHER">
-		<table>
-		
-		</table>
-		<button type="button" class="btn-submit" id="getfund" onclick="fund()">Fund Farmer</button>
-		
+    <input type="text" class="input-std" id="FarmerAddress" placeholder="Farmer Address : 0x56i85245Dgh589932c">
+    <input type="text" class="input-std" id="amount" placeholder="Fund Amount in Ether">
+    <button type="button" class="btn-submit" id="getfund" onclick="fund()">Fund Farmer</button>
 	<span id="status"></span>
-	</div>
+</div>
+<!-- ********************************* END Financing Form ********************************* -->
 
 
-  <div hidden class="form" id="supplier-form">
-		<h2 class="form-title">Check in form</h2>
-		<input type="text" class="input-std" id="lotnSupplier" placeholder="numero de lot">
-		<input type="text" class="input-std" id="check-in-date" placeholder="Check in date">
-		<button type="button" class="btn-submit" id="setvalue-supplier" onclick="setSupplier()">Submit Details!</button>
-	<span id="status"></span>
-	</div>
+<!-- ********************************* Supplier Form ********************************* -->
+<div class="form" id="supplier-form">
+    <h2 class="form-title">Check in form</h2>
+    <input type="text" class="input-std" id="fids" placeholder="Farmer Id">
+    <input type="text" class="input-std" id="lotnos" placeholder="Lot Number">
+    <input type="text" class="input-std" id="check-in-date" placeholder="Check in date">
+    <button type="button" class="btn-submit" id="setvalue-supplier" onclick="set()">Submit Details!</button>
+    <span id="status"></span>
+</div>
+    <!-- ********************************* END Supplier Form ********************************* -->
 
-</hide>
-  
+    <!-- ***************************** QrCode Image and Download Button ***************************** -->
+    <div hidden id="qrStuff">
+        <div id="canvas" align="center"></div>
+        <button  id="formButton" align="center" onclick="download();">Download QR Code</button>
+    </div>
+
    <link href="./app.css" rel='stylesheet' type='text/css'>
   <script src="./app.js"></script>
- 
+  <script type="text/javascript" src="qr.js"></script>
+
 </body>
 </html>

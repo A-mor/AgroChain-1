@@ -3925,3 +3925,5 @@
 [2021/12/12 22:11:01.658] - eth_blockNumber
 [2021/12/12 22:11:21.684] - eth_blockNumber
 [2021/12/12 22:12:30.053] - eth_blockNumber
+[2021/12/12 22:44:11.319] - eth_unsubscribe
+[2021/12/12 22:44:11.321] - eth_unsubscribe

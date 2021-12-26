@@ -43744,6 +43744,7 @@ $("#sign-up-btn").click(function() {
   $("#approve-form").hide();
   $("#finance-form").hide();
   $("#supplier-form").hide();
+  $("#qrStuff").hide();
  
   $("#sign-up-btn").addClass("active");
   $("#log-in-btn").removeClass("active");
@@ -43760,6 +43761,7 @@ $("#log-in-btn").click(function() {
   $("#payments-form").hide();
   $("#approve-form").hide();
   $("#finance-form").hide();
+  $("#qrStuff").hide();
 
   $("#supplier-form").hide();
   $("#supplier-btn").removeClass("active");
@@ -43778,6 +43780,7 @@ $("#payments-btn").click(function() {
   $("#payments-form").show();
   $("#approve-form").hide();
   $("#finance-form").hide();
+  $("#qrStuff").hide();
 
   $("#supplier-form").hide();
   $("#supplier-btn").removeClass("active");
@@ -43797,6 +43800,7 @@ $("#Approve-btn").click(function() {
   $("#payments-form").hide();
   $("#approve-form").show();
   $("#finance-form").hide();
+  $("#qrStuff").hide();
   
   $("#sign-up-btn").removeClass("active");
   $("#log-in-btn").removeClass("active");
@@ -43814,6 +43818,27 @@ $("#finance-btn").click(function() {
   $("#log-in-form").hide();
   $("#payments-form").hide();
   $("#approve-form").hide();
+  $("#qrStuff").hide();
+
+  $("#supplier-form").hide();
+  $("#supplier-btn").removeClass("active");
+ 
+  $("#finance-btn").addClass("active");
+  $("#sign-up-btn").removeClass("active");
+  $("#log-in-btn").removeClass("active");
+  $("#payments-btn").removeClass("active");
+  $("#Approve-btn").removeClass("active");
+ 
+});
+
+$("#finance-btn-undef").click(function() {
+  
+  $("#finance-form").show();
+  $("#sign-up-form").hide();
+  $("#log-in-form").hide();
+  $("#payments-form").hide();
+  $("#approve-form").hide();
+  $("#qrStuff").hide();
 
   $("#supplier-form").hide();
   $("#supplier-btn").removeClass("active");
@@ -43833,6 +43858,7 @@ $("#supplier-btn").click(function() {
   $("#log-in-form").hide();
   $("#payments-form").hide();
   $("#approve-form").hide();
+  $("#qrStuff").hide();
 
   $("#supplier-form").show();
   $("#supplier-btn").addClass("active");
@@ -43877,175 +43903,147 @@ console.log("this is the address sent to produce : "+account);
   $("#sign-up-form").hide();
   $("#log-in-form").hide();
   $("#payments-form").hide();
+  $("#qrStuff").show();
  
   
   $("#sign-up-btn").removeClass("active");
   $("#log-in-btn").addClass("active");
   $("#payments-btn").removeClass("active");
+
+  console.log("Genrating Farmer QrCode :\nFarmer ID: "+fid+"\n"+"Farmer Name: "+fname+"\n"+"Location: "+loc+"\n"+"Cropp Name: "+crop+"\n"
+    +"Farmer Phone :"+contact+"\n"+"Quantity :"+quantity+"\n"+"Price :"+exprice);
+
+    newQrData = "Farmer-ID: "+fid+" ||\n  "+"Farmer-Name: "+fname+" ||\n  "+"Location: "+loc+" ||\n  "+"Cropp-Name: "+crop+" ||\n  "
+    +"Farmer-Phone: "+contact+" ||\n  "+"Quantity: "+quantity+" ||\n  "+"Price: "+exprice;
+    //console.log('I am updating farmer details in testing quality\n Farmer ID: '+qrId.value+'\nFarmer Name: '+qrName.value);
+    qrCode.update({
+      data: newQrData
+    });
     
   }).catch(function(e) {
     console.log(e);
     setStatus("Error setting value; see log.");
   });
-  
-  /*metaset.fundaddr(parseInt(account), {from: account,gas:1000000}).then(function() {
-    
-  console.log("Account Funded!");
- 
-    
-  }).catch(function(e) {
-    console.log(e);
-    setStatus("Error setting value; see log.");
-  });*/
-  
-  setTimeout(function(){
-		
-			refresh();
-						  
-		}, 8000);
-  
- 
-  
-  
+
 };
 
-function refresh(){
-	var metaset = StructStorage.at(conaddress);
-	var balance_element = document.getElementById("balance");
-  
-  metaset.getBalance.call(parseInt(account), {from: account,gas:400000}).then(function(value) {
-    
-    balance_element.innerHTML = value;
-    console.log("Balance Updated!");
-	
-    
-  }).catch(function(e) {
-    console.log(e);
-    setStatus("Error setting value; see log.");
-  });	
-	
-}
+
 // any user funding any farmer should have specification for addresses
 // ie fund only farmers , you can show all farmers (id, address) and the user chooses the address corresponding to the id he want to fund
 function fund(){
-//web3.personal.unlockAccount(addr, pass);
-const receiver = document.getElementById("pfid").value;
-//accounts = accs;
+const receiver = document.getElementById("FarmerAddress").value;
 const account = accounts[0];
 const amount = parseInt(document.getElementById("amount").value);
-console.log("this is fund func : "+ account+ "amount : "+ amount);
-const toAddress = "0xc8aba956798f41afe404bfefcc05b719be80ee4c"; // Address of the recipient
-//const amount = 2; // Willing to send 2 ethers
 const amountToSend = web3.toWei(amount, "ether"); // Convert to wei value
 var send = web3.eth.sendTransaction({ from:account, to:receiver, value:amountToSend },function(error , result){
-  if(!error)
-      console.log(result);
-  else{
-      console.log(error.code); 
-      $(alert("Transaction rejected"));
-    }
-});
- /* const web33 = new Web3(window.ethereum);
-	var meta = StructStorage.at(conaddress);
-	
-	var amount = parseInt(document.getElementById("amount").value);
-	var receiver = document.getElementById("pfid").value;
-	
-    
-  console.log("Initiating transaction... (please wait)");
-  //meta.sendCoin(receiver, amount, account, {from: account,gas:700000}).then(function(values) {
-    meta.send(receiver).then(function(values){
-    console.log("Transaction complete!");
-  
-  }).catch(function(e) {
-    console.log(e);
-    
+    if(!error)
+        console.log(result);
+    else{
+        console.log(error.code); 
+        $(alert("Transaction rejected"));
+      }
   });
-	setTimeout(function(){
-		
-			refresh();
-						  
-		}, 8000);*/
 }
+
 // get farmer info 
+
 function get(){
-
+  
 var metaget = StructStorage.at(conaddress);
-
 var fid = document.getElementById("fid1").value;
-
 setStatus("Initiating transaction... (please wait)");
-
 metaget.getproduce.call( fid, {from: account}).then(function(value) {
   	
     
-    var span_element2 = document.getElementById("getval2");
-	var str = web3.toAscii(value[1]);
-    span_element2.innerHTML = str;
-
+  var span_element2 = document.getElementById("getval2");
+  var str = web3.toAscii(value[1]);
+  span_element2.innerHTML = str;
+  qrName = str
+    
+    
 	var span_element3 = document.getElementById("getval3");
 	var str = web3.toAscii(value[2]);
-    span_element3.innerHTML = str;	
+  span_element3.innerHTML = str;	
+  qrLocation = str;
  
+
 	var str = web3.toAscii(value[3]);
 	var span_element4 = document.getElementById("getval4");
 	span_element4.innerHTML = str;
+  qrCrop = str;
+
 
 	var span_element5 = document.getElementById("getval5");
 	span_element5.innerHTML = value[4].valueOf();
+  qrPhone = value[4].valueOf();
 
 	var span_element6 = document.getElementById("getval6");
 	span_element6.innerHTML = value[5].valueOf();
+  qrQuantity = value[5].valueOf();
 	
 	var span_element7 = document.getElementById("getval7");
-    span_element7.innerHTML = value[6].valueOf();
- 
+  span_element7.innerHTML = value[6].valueOf();
+  qrPrice = value[6].valueOf();
+
+  console.log("Genrating Tester QrCode :\nFarmer ID: "+fid+"\n"+"Farmer Name: "+qrName+"\n"+"Location: "+qrLocation+"\n"+"Cropp Name: "+qrCrop+"\n"
+  +"Farmer Phone: "+"Farmer Phone :"+qrPhone+"\n"+"Quantity :"+qrQuantity+"\n"+"Price :"+qrPrice);
+
+  newQrData = "Farmer-ID: "+fid+" ||\n  "+"Farmer-Name: "+qrName+" ||\n  "+"Location: "+qrLocation+" ||\n  "+"Cropp-Name: "+qrCrop+" ||\n  "
+    +"Farmer-Phone: "+qrPhone+" ||\n  "+"Quantity: "+qrQuantity+" ||\n  "+"Price: "+qrPrice;
+  qrCode.update({
+      data: newQrData
+    });
+
  setStatus("Transaction complete!");
     
   }).catch(function(e) {
     console.log(e);
     setStatus("Error getting value; see log.");
   });
-
-  
 };
+
 //set lot no
 function setQ(){
+  var fid = document.getElementById("fid1").value;
+  var metaset = StructStorage.at(conaddress);
 
-var metaset = StructStorage.at(conaddress);
+  var lotno = document.getElementById("lotno").value;
+  var grade = document.getElementById("grade").value;
+  var mrp = parseInt(document.getElementById("mrp").value);
+  var testdate = document.getElementById("testdate").value;
+  var expdate = document.getElementById("expdate").value;
 
-var lotno = document.getElementById("lotno").value;
-var grade = document.getElementById("grade").value;
-var mrp = parseInt(document.getElementById("mrp").value);
-var testdate = document.getElementById("testdate").value;
-var expdate = document.getElementById("expdate").value;
+  console.log("Genrating Lot QrCode :\n\nFarmer ID: "+fid+"\n"+"Farmer Name: "+qrName+"\n"+"Location: "+qrLocation+"\n"+"Cropp Name: "+qrCrop+"\n"
+    +"Farmer Phone: "+qrPhone+"\n"+"Quantity :"+qrQuantity+"\n"+"Price :"+qrPrice+"\n"+"Lot number :"+lotno+"\n"+"Grade :"+grade+"\n"+" MRP: "+mrp+"\n"+"Test Date :"+testdate+"\n"+"Expiry Date :"+expdate);
 
-
-setStatus("Initiating transaction... (please wait)");
-
-metaset.quality( lotno,grade,mrp,testdate,expdate, {from: account,gas:400000}).then(function() {
-  setStatus("Transaction complete!");
-	
-  $("#sign-up-form").hide();
-  $("#log-in-form").hide();
-  $("#payments-form").hide();
-  $("#approve-form").hide();
-  
-  $("#sign-up-btn").removeClass("active");
-  $("#log-in-btn").removeClass("active");
-  $("#payments-btn").addClass("active");
-  $("#Approve-btn").removeClass("active");
-	
-    
-  }).catch(function(e) {
-    console.log(e);
-    setStatus("Error setting value; see log.");
+  newQrData = "Farmer-ID: "+fid+" ||\n  "+"Farmer-Name: "+qrName+" ||\n  "+"Location: "+qrLocation+" ||\n  "+"Cropp-Name: "+qrCrop+" ||\n  "
+    +"Farmer-Phone: "+qrPhone+" ||\n  "+"Quantity: "+qrQuantity+" ||\n  "+"Price: "+qrPrice+" ||\n  "+"Lot-number: "+lotno+" ||\n  "+"Grade: "+grade+" ||\n  "+" MRP: "+mrp+" ||\n  "+"Test-Date: "+testdate+" ||\n  "+"Expiry-Date: "+expdate;
+  qrCode.update({
+    data: newQrData
   });
+  setStatus("Initiating transaction... (please wait)");
 
- 
-  
+  metaset.quality( lotno,grade,mrp,testdate,expdate, {from: account,gas:400000}).then(function() {
+    setStatus("Transaction complete!");
+    
+    $("#sign-up-form").hide();
+    $("#log-in-form").hide();
+    $("#payments-form").hide();
+    $("#approve-form").hide();
+    $("#qrStuff").show();
+    
+    $("#sign-up-btn").removeClass("active");
+    $("#log-in-btn").removeClass("active");
+    $("#payments-btn").addClass("active");
+    $("#Approve-btn").removeClass("active");
+	
+  }).catch(function(e) {
+      console.log(e);
+      setStatus("Error setting value; see log.");
+  });
 };
 
+// refresh Page when account Changes
 window.ethereum.on('accountsChanged', function (accounts) {
   console.log("user changed")
   $(location.reload());
@@ -44054,41 +44052,42 @@ window.ethereum.on('accountsChanged', function (accounts) {
 // get lot info
 function cgetQ(){
 
-var metaget = StructStorage.at(conaddress);
-var lid = document.getElementById("lotnum").value;
+  var metaget = StructStorage.at(conaddress);
+  var lid = document.getElementById("lotnum").value;
 
-setStatus("Initiating transaction... (please wait)");
-
-metaget.getquality.call( lid,{from: account}).then(function(value) {
+  setStatus("Initiating transaction... (please wait)");
+  if (lid!=""){
+    metaget.getquality.call( lid,{from: account}).then(function(value) {
+      
+      var cspan_element1 = document.getElementById("cgetval8");
+      cspan_element1.innerHTML = lid;
     
-	var str = web3.toAscii(value[0]);
-	var cspan_element1 = document.getElementById("cgetval8");
-    cspan_element1.innerHTML = str;
- 
-	var str = web3.toAscii(value[1]);
-	var cspan_element1 = document.getElementById("cgetval9");
-    cspan_element1.innerHTML = str;
+      var str = web3.toAscii(value[1]);
+      var cspan_element1 = document.getElementById("cgetval9");
+      cspan_element1.innerHTML = str;
 
-	var cspan_element1 = document.getElementById("cgetval10");
-    cspan_element1.innerHTML = value[2].valueOf();
+      var cspan_element1 = document.getElementById("cgetval10");
+      cspan_element1.innerHTML = value[2].valueOf();
 
-	var str = web3.toAscii(value[3]);
-	var cspan_element1 = document.getElementById("cgetval11");
-    cspan_element1.innerHTML = str;
-	
-	var str = web3.toAscii(value[4]);
-	var cspan_element1 = document.getElementById("cgetval12");
-    cspan_element1.innerHTML = str;
+      var str = web3.toAscii(value[3]);
+      var cspan_element1 = document.getElementById("cgetval11");
+      cspan_element1.innerHTML = str;
+      
+      var str = web3.toAscii(value[4]);
+      var cspan_element1 = document.getElementById("cgetval12");
+      cspan_element1.innerHTML = str;
 
-   setStatus("Transaction complete!");
+      setStatus("Transaction complete!");
     
-  }).catch(function(e) {
-    console.log(e);
-    setStatus("Error getting value; see log.");
-  });
-
-  
+    }).catch(function(e) {
+      console.log(e);
+      setStatus("Error getting value; see log.");
+    });
+  } else {
+    $(alert("No lot inserted"))
+  }
 };
+
 // supposed to set lot number and check-on-date  but it gives an error : not a function)
 function setSupplier(){
   var lotn = document.getElementById("lotnSupplier").value;
@@ -44096,118 +44095,60 @@ function setSupplier(){
   console.log ("set supplier values \nfid : "+ lotn + "\ndate : "+checkDate);
   var metaset = StructStorage.at("0x5c85Bf1C6bFf9A527d6442baB20EA8120d689D8E");
 
-setStatus("Initiating transaction... (please wait)");
+  setStatus("Initiating transaction... (please wait)");
 
-metaset.check( lotn,checkDate ,{from: account,gas:400000}).then(function() {
-  setStatus("Transaction complete!");
-  $("#sign-up-form").hide();
-  $("#log-in-form").hide();
-  $("#payments-form").hide();
-  $("#supplier-for").hide();
+  metaset.check.send( lotn,checkDate ,{from: account,gas:400000}).then(function() {
+    setStatus("Transaction complete!");
+    $("#sign-up-form").hide();
+    $("#log-in-form").hide();
+    $("#payments-form").hide();
+    $("#supplier-for").hide();
     
   }).catch(function(e) {
-    console.log(e);
-    setStatus("Error setting value; see log.");
+      console.log(e);
+      setStatus("Error setting value; see log.");
   });
 }
+
 // get farmer info
 function getQ(){
 
-var metaget = StructStorage.at(conaddress);
-var fid = document.getElementById("getfid").value;
-
-metaget.getproduce.call( fid,{from: account}).then(function(value) {
+  var metaget = StructStorage.at(conaddress);
+  var fid = document.getElementById("getfid").value;
+  metaget.getproduce.call( fid,{from: account}).then(function(value) {
     	
-	var cspan_element1 = document.getElementById("cgetval1");
+	  var cspan_element1 = document.getElementById("cgetval1");
     var cstr = web3.toAscii(value[0]);  
     cspan_element1.innerHTML = fid;
  	
     var cspan_element2 = document.getElementById("cgetval2");
-	var cstr = web3.toAscii(value[1]);
+	  var cstr = web3.toAscii(value[1]);
     cspan_element2.innerHTML = cstr;
 
-	var cspan_element3 = document.getElementById("cgetval3");
-	var cstr = web3.toAscii(value[2]);
-	cspan_element3.innerHTML = cstr;
-    
-	var cstr = web3.toAscii(value[3]);
-	var cspan_element4 = document.getElementById("cgetval4");
-	cspan_element4.innerHTML = cstr;   
+    var cspan_element3 = document.getElementById("cgetval3");
+    var cstr = web3.toAscii(value[2]);
+    cspan_element3.innerHTML = cstr;
+      
+    var cstr = web3.toAscii(value[3]);
+    var cspan_element4 = document.getElementById("cgetval4");
+    cspan_element4.innerHTML = cstr;   
 	
-	var cspan_element5 = document.getElementById("cgetval5");
-	cspan_element5.innerHTML = value[4].valueOf();
+    var cspan_element5 = document.getElementById("cgetval5");
+    cspan_element5.innerHTML = value[4].valueOf();
 
-	var cspan_element6 = document.getElementById("cgetval6");
-	cspan_element6.innerHTML = value[5].valueOf();	
+    var cspan_element6 = document.getElementById("cgetval6");
+    cspan_element6.innerHTML = value[5].valueOf();	
+    
+    var cspan_element7 = document.getElementById("cgetval7");
+    cspan_element7.innerHTML = value[6].valueOf();
    
-	var cspan_element7 = document.getElementById("cgetval7");
-	cspan_element7.innerHTML = value[6].valueOf();
-   
-   setStatus("Transaction complete!");
+    setStatus("Transaction complete!");
     
   }).catch(function(e) {
     console.log(e);
     setStatus("Error getting value; see log.");
-  });
-
-  
+  }); 
 };
-//not used
-function printTransaction(txHash) {
-	
-  var txHash = web3.eth.getBlock("latest").transactions[0];
-  var tx = web3.eth.getTransaction(txHash);
-  
-  if (tx != null) {
-    console.log("  tx hash          : " + tx.hash + "\n"
-      + "   nonce           : " + tx.nonce + "\n"
-      + "   blockHash       : " + tx.blockHash + "\n"
-      + "   blockNumber     : " + tx.blockNumber + "\n"
-      + "   transactionIndex: " + tx.transactionIndex + "\n"
-      + "   from            : " + tx.from + "\n" 
-      + "   to              : " + tx.to + "\n"
-      + "   value           : " + tx.value + "\n"
-      + "   gasPrice        : " + tx.gasPrice + "\n"
-      + "   gas             : " + tx.gas + "\n"
-      + "   input           : " + tx.input);
-  
-  
-  
-  }
-}
-//not used
-function printBlock() {
-	
-  var block = web3.eth.blockNumber();
-  console.log("Block number     : " + web3.eth.blockNumber + "\n"
-    + " hash            : " + web3.eth.getBlock(block).hash + "\n"
-    + " parentHash      : " + web3.eth.getBlock(block).parentHash + "\n"
-    + " nonce           : " + web3.eth.getBlock(block).nonce + "\n"
-    + " sha3Uncles      : " + web3.eth.getBlock(block).sha3Uncles + "\n"
-    + " logsBloom       : " + web3.eth.getBlock(block).logsBloom + "\n"
-    + " transactionsRoot: " + web3.eth.getBlock(block).transactionsRoot + "\n"
-    + " stateRoot       : " + web3.eth.getBlock(block).stateRoot + "\n"
-    + " miner           : " + web3.eth.getBlock(block).miner + "\n"
-    + " difficulty      : " + web3.eth.getBlock(block).difficulty + "\n"
-    + " totalDifficulty : " + web3.eth.getBlock(block).totalDifficulty + "\n"
-    + " extraData       : " + web3.eth.getBlock(block).extraData + "\n"
-    + " size            : " + web3.eth.getBlock(block).size + "\n"
-    + " gasLimit        : " + web3.eth.getBlock(block).gasLimit + "\n"
-    + " gasUsed         : " + web3.eth.getBlock(block).gasUsed + "\n"
-    + " timestamp       : " + web3.eth.getBlock(block).timestamp + "\n"
-    + " transactions    : " + web3.eth.getBlock(block).transactions + "\n"
-    + " uncles          : " + web3.eth.getBlock(block).uncles);
-    if (web3.eth.getBlock(block).transactions != null) {
-      console.log("--- transactions ---");
-      web3.eth.getBlock(block).transactions.forEach( function(e) {
-        printTransaction(e);
-      })
-    }
-	
-	var blocknum = document.getElementById("blocknum");
-  blocknum.innerHTML = block.valueOf();
-};
-
 
 // hide everything on load, show depending on need and scenario
 window.onload = function() {
@@ -44218,9 +44159,8 @@ window.onload = function() {
   $("#supplier-form").hide();
   $("#log-in-form").hide();
   $("#form-selector-undef").hide();
+  $("#qrStuff").hide();
 
-
-  
   web3.eth.getAccounts(function(err, accs) {
     if (err != null) {
       alert("There was an error fetching your accounts.");
@@ -44270,6 +44210,7 @@ window.onload = function() {
         $('#payments-btn').hide(); 
         $('#finance-btn').show(); 
         $("#supplier-btn").hide();
+        $("#qrStuff").hide();
         $("#log-in-btn").addClass("active");
         
         $("#sign-up-form").hide();
@@ -44287,12 +44228,15 @@ window.onload = function() {
         $('#finance-btn').show(); 
         $("#log-in-btn").hide();
         $("#supplier-btn").hide();
+        $("#qrStuff").hide();
         $('#payments-btn').addClass("active"); 
         
         $("#sign-up-form").hide();
         $("#log-in-form").hide();
         $("#payments-form").show();
         $("#supplier-form").hide();
+
+        $("#content").hide();
         break;
       }
       //supplier
@@ -44310,6 +44254,7 @@ window.onload = function() {
         $("#log-in-form").hide();
         $("#payments-form").hide();
         $("#supplier-form").show();
+        $("#qrStuff").hide();
         break;
       }
       // if the connected addres is none of the above 
@@ -44334,6 +44279,7 @@ window.onload = function() {
         $("#supplier-form").hide();
         $("#log-in-form").hide();
         $("#form-selector").hide();
+        $("#qrStuff").hide();
 
         // depending on the button clicked => showing the needed forms and buttons and hiding others
 
@@ -44344,11 +44290,13 @@ window.onload = function() {
           from_address.innerHTML = "New Farmer";
 
           $("#sign-up-form").show();
+          $("#qrStuff").show();
           $("#log-in-form").hide();
           $("#payments-form").hide();
           $("#approve-form").hide();
           $("#finance-form").hide();
           $("#supplier-form").hide();
+          $("#qrStuff").hide();
 
           $("#log-in-btn-undef").hide();
           $("#payments-btn-undef").hide();
@@ -44363,11 +44311,13 @@ window.onload = function() {
           console.log("Identified as tester");
           from_address.innerHTML = "New Tester";
           $("#sign-up-form").hide();
+          $("#qrStuff").show();
           $("#log-in-form").show();
           $("#payments-form").hide();
           $("#approve-form").hide();
           $("#finance-form").hide();
           $("#supplier-form").hide();
+          $("#qrStuff").hide();
         
           $("#sign-up-btn-undef").hide();
           $("#log-in-btn-undef").show();
@@ -44389,6 +44339,7 @@ window.onload = function() {
           $("#approve-form").hide();
           $("#finance-form").hide();
           $("#supplier-form").hide();
+          $("#qrStuff").hide();
         
           $("#sign-up-btn-undef").hide();
           $("#log-in-btn-undef").hide();
@@ -44409,6 +44360,7 @@ window.onload = function() {
           $("#approve-form").hide();
           $("#finance-form").hide();
           $("#supplier-form").show();
+          $("#qrStuff").hide();
         
           $("#sign-up-btn-undef").hide();
           $("#log-in-btn-undef").hide();
